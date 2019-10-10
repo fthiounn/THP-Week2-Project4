@@ -25,6 +25,8 @@ def perform
 	puts "Succes".green + " - Hash succesfully created" if crypto_hash.any?
 	puts "Error".red + " - Hash not created" if !crypto_hash.any?
 
+	puts "We found #{crypto_hash.size} cryptos and their value"
+
 	return crypto_hash
 end
 def open_url(link)
