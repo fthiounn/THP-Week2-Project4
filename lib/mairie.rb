@@ -17,6 +17,7 @@ def perform
 		list_hash[a]= Hash.new
 		list_hash[a]= get_townhall_email(list_url[a])
 	end
+	list_hash.delete_if { |key, value| value.nil? }
 	return list_hash
 end
 
