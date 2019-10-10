@@ -19,8 +19,11 @@ def perform
 	puts "Succes".green + " - Price List succesfully extracted" if list_value.any?
 	puts "Error".red + " - Price List not extracted" if !list_value.any?
 	
-	crypto_hash = Hash.new
+	crypto_hash = []
 	crypto_hash = make_hash(list_key,list_value)
+
+	puts "Succes".green + " - Hash succesfully created" if crypto_hash.any?
+	puts "Error".red + " - Hash not created" if !crypto_hash.any?
 
 	return crypto_hash
 end
@@ -36,10 +39,11 @@ def open_url(link)
 	end
 end
 def make_hash (list_key,list_value)
-	return nil if (!list_key.kind_of?(Array) || !list_value.kind_of?(Array))
-	tmp_hash = Hash.new
+	return nil if (!list_key.kind_of?(Nokogiri::XML::NodeSet) || !list_value.kind_of?(Nokogiri::XML::NodeSet))
+	tmp_hash = []
 	for a in 0..list_key.size-1 do
-		tmp_hash[list_key[a].text]=list_value[a].text
+		tmp_hash[a] = Hash.new
+		tmp_hash[a][list_key[a].text]=list_value[a].text
 	end
 	return tmp_hash
 end

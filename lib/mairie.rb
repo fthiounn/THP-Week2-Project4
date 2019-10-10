@@ -42,7 +42,6 @@ end
 def get_townhall_urls
 		page = Nokogiri::HTML(open(URL)).xpath("//a[@class='lientxt']/@href")
 		puts "Annuaire du val d'oise bien récuperé, extraction des url des mairies" if page.any?
-		puts page.class
 	return page
 end
 perform
