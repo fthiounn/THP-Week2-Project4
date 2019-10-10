@@ -17,12 +17,14 @@ def perform
 		list_hash[a]= Hash.new
 		list_hash[a]= get_townhall_email(list_url[a])
 	end
-	list_hash.delete_if { |key, value| value.nil? }
+
+	puts "We found #{list_hash.length } townhalls and saved their emails "
 	return list_hash
 end
 
 
 def get_townhall_email(townhall_url)
+	return nil if townhall_url.nil? || townhall_url.empty?
 	mail_hash = Hash.new
 	city_name = townhall_url[35..-6]
 	list_mail = Nokogiri::HTML(open(townhall_url)).xpath("//*[contains(text(), '@')]")
@@ -38,8 +40,9 @@ def get_townhall_email(townhall_url)
 end
 
 def get_townhall_urls
-	page = Nokogiri::HTML(open(URL)).xpath("//a[@class='lientxt']/@href")
-	puts "Annuaire du val d'oise bien récuperé, extraction des url des mairies" if page.any?
+		page = Nokogiri::HTML(open(URL)).xpath("//a[@class='lientxt']/@href")
+		puts "Annuaire du val d'oise bien récuperé, extraction des url des mairies" if page.any?
+		puts page.class
 	return page
 end
 perform

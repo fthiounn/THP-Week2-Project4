@@ -1,21 +1,20 @@
-#But de ce programme :
-# Recuperer tout d'abord la liste des url pour les # mairies du val d'oise
-# Recuperer sur chacune de ces pages l'adresse mail pour les joindre
+require_relative '../lib/mairie'
 
-require 'nokogiri'
-require 'open-uri'
-URL = "http://annuaire-des-mairies.com/val-d-oise.html"
+describe "get_townhall_email method, it takes an url and gives back a hash with the deputy profile" do
+  it "test no url" do
+    expect(get_townhall_email("")).to eq(nil)
+  end
+  it "test good url" do
+    expect(get_townhall_email("http://annuaire-des-mairies.com/95/nerville-la-foret.html")).to eq({"nerville-la-foret"=>"mairie-nerville95@wanadoo.fr"})
+  end
+  it "test good url" do
+    expect(get_townhall_email("http://annuaire-des-mairies.com/95/nerville-la-foret.html")).to be_kind_of(Hash)
+  end
+end
 
-def perform
-	get_townhall_urls
+
+describe "get_townhall_urls method,  return the xml selection" do
+  it "TEST  return type" do
+    expect(get_townhall_urls()).to be_kind_of(Nokogiri::XML::NodeSet)
+  end
 end
-def get_townhall_email(townhall_url)
-	return
-end
-def get_townhall_urls
-	puts URL
-	page = open_url(URL)
-	puts page
-	return open_url(URL).xpath("//a[@class='lientxt']/@href")
-end
-perform

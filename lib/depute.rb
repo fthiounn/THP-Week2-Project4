@@ -24,7 +24,7 @@ URL2 = "http://www2.assemblee-nationale.fr"
 
 def perform
 	#1. recuperation de la liste des url des deputes
-	assembly_page = openfile(URL)
+	assembly_page = open_url(URL)
 	list_deputy_url = assembly_page.xpath("//a[starts-with(@href, '/deputes/fiche/')]/@href")
 		#formatage des url
 	list_deputy_url = list_deputy_url.map { |deputy|
@@ -36,27 +36,40 @@ def perform
 		deputy_list[index]= Hash.new
 		deputy_list[index] = get_deputy_hash(url)
 	}
-	puts "We found #{deputy_list.size} deputy"
+	puts "We found #{deputy_list.size} deputy and saved their name/mail"
 	return deputy_list
 end
+
 def get_deputy_hash (url)
-	deputy_page = openfile(url)
+
+	return nil if (url.empty? || url.nil?)
+
+	deputy_page = open_url(url)
 	deputy_profile = Hash.new
 	#traitement du nom
 	full_name = deputy_page.xpath("//div[@class='titre-bandeau-bleu clearfix']/h1/text()")
-	puts "Error".red + " - @#{url}  cannot extract full_name" if full_name.text.empty?
+	
+	if full_name.text.empty? then
+		puts "Error".red + " - @#{url}  cannot find data (full_name)" 
+		return nil
+	end
 	deputy_profile["first_name"] = full_name.text.split(" ").at(1)
 	deputy_profile["last_name"] = full_name.text.split(" ").at(2)
 	#traitement du mail
-	mail = deputy_page.xpath("//a[contains(text(), '@')]")
-	puts "Error".red + " - @#{url}  cannot extract mail" if mail.text.empty?
+	mail = deputy_page.xpath("//a[contains(text(), '@')]") 
+
+	if mail.text.empty? then
+		puts "Error".red + " - @#{url}  cannot find data (mail)"
+		return nil
+	end
 	mail = mail.text.split("@").at(0) + "@assemblee-nationale.fr"
 	deputy_profile["email"] = mail
 
 	return deputy_profile
 end
 
-def openfile(link)
+def open_url(link)
+	return nil if (link.empty? || link.nil?)
 	page = Nokogiri::HTML(open(link))
 	if page then
 		puts "Succes".green + " - #{link} succesfully extracted"
@@ -66,5 +79,4 @@ def openfile(link)
 		return nil
 	end
 end
-
 perform

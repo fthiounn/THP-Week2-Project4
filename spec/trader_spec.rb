@@ -1,21 +1,17 @@
 require_relative '../lib/trader'
 
-describe "open_url method, it should return the html content of the url" do
-  it "TEST empty file" do
-    expect(open_url("")).to eq("")
-  end
-  it "TEST if type = HTML" do
-    expect(open_url("google.com")).to start_with?("<!doctype html>")
-  end
-end
-describe "make_hash method, it should return a hash joining the 2 arrays" do
-  it "TEST empty hash" do
-    expect(make_hash([],[])).to eq({})
-  end
-  it "TEST hash size" do
-    expect(make_hash(["a","b"],[1,2])).to eq({"a"=>"1", "b"=>"2"})
+describe "make_hash method, it should return a hash with both arrays" do
+  it "Wrong type" do
+    expect(make_hash("","")).to eq(nil)
   end
 end
 
 
-
+describe "open_url method, takes a url, return the html" do
+  it "TEST empty url" do
+    expect(open_url("")).to eq(nil)
+  end
+  it "TEST good url" do
+    expect(open_url("https://www.google.com/")).to be_kind_of(Nokogiri::HTML::Document)
+  end
+end

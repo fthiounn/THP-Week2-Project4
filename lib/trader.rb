@@ -22,12 +22,21 @@ def perform
 	crypto_hash = Hash.new
 	crypto_hash = make_hash(list_key,list_value)
 
-	return
+	return crypto_hash
 end
-def open_url(path)
-	return Nokogiri::HTML(open(path)) 
+def open_url(link)
+	return nil if (link.empty? || link.nil?)
+	page = Nokogiri::HTML(open(link))
+	if page then
+		puts "Succes".green + " - #{link} succesfully extracted"
+		return page
+	else
+		puts "Error".red + " - #{link}  not extracted" 
+		return nil
+	end
 end
 def make_hash (list_key,list_value)
+	return nil if (!list_key.kind_of?(Array) || !list_value.kind_of?(Array))
 	tmp_hash = Hash.new
 	for a in 0..list_key.size-1 do
 		tmp_hash[list_key[a].text]=list_value[a].text
