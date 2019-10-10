@@ -6,6 +6,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'colorize'
 
+
 URL = "http://annuaire-des-mairies.com/val-d-oise.html"
 
 def perform
