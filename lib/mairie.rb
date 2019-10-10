@@ -4,6 +4,8 @@
 
 require 'nokogiri'
 require 'open-uri'
+require 'colorize'
+
 URL = "http://annuaire-des-mairies.com/val-d-oise.html"
 
 def perform
@@ -15,7 +17,7 @@ def perform
 		list_hash[a]= Hash.new
 		list_hash[a]= get_townhall_email(list_url[a])
 	end
-	puts list_hash
+	return list_hash
 end
 
 
@@ -26,12 +28,17 @@ def get_townhall_email(townhall_url)
 	list_mail.each { |mail|
 		mail_hash[city_name]= mail.text
 	}
+	if mail_hash.empty? then
+		puts "Echec ".red+": No mail found for #{city_name}" 
+	else
+		puts "Succes ".green+"Extraction des emails de la mairie de #{city_name}"
+	end
 	return mail_hash
 end
 
 def get_townhall_urls
 	page = Nokogiri::HTML(open(URL)).xpath("//a[@class='lientxt']/@href")
-	puts "liste des url bien recuperée" if page.any?
+	puts "Annuaire du val d'oise bien récuperé, extraction des url des mairies" if page.any?
 	return page
 end
 perform
