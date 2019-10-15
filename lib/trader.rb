@@ -6,7 +6,7 @@ require 'colorize'
 URL = "https://coinmarketcap.com/all/views/all/"
 
 def perform
-
+	
 	page = open_url(URL)
 	puts "Error".red + " - HTML not extracted" if !page
 	puts "Succes".green + " - Html succesfully extracted" if page
