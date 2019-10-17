@@ -10,6 +10,7 @@ require 'colorize'
 URL = "http://annuaire-des-mairies.com/val-d-oise.html"
 
 def perform
+	puts "breakpoint"
 	list_url = get_townhall_urls.map {|x|
 		URL[0..30] + x.text[1..-1]
 	}
@@ -33,9 +34,9 @@ def get_townhall_email(townhall_url)
 		mail_hash[city_name]= mail.text
 	}
 	if mail_hash.empty? then
-		puts "Echec ".red+": No mail found for #{city_name}" 
+		puts "Echec ".red + ": No mail found for #{city_name}" 
 	else
-		puts "Succes ".green+"Extraction des emails de la mairie de #{city_name}"
+		puts "Succes ".green + "Extraction des emails de la mairie de #{city_name}"
 	end
 	return mail_hash
 end
